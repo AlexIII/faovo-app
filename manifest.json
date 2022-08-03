@@ -1,0 +1,22 @@
+{
+  "name": "faovo-app",
+  "short_name": "faovo-app",
+  "start_url": "/faovo-app/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff",
+  "theme_color": "#a0a0f0",
+  "icons": [
+    {
+      "src": "./icons/android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
