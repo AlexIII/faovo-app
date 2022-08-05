@@ -1,4 +1,4 @@
-import { LeScooterDataModel, BLEServiceControl } from 'components/App';
+import { BLEServiceControl, LeScooterBLEData } from 'components/App';
 import * as React from 'preact/compat';
 import { useConnection, useThrottle } from 'hooks';
 import { LeScooterBLE } from './LeScooterBLE';
@@ -9,17 +9,13 @@ const DATA_THROTTLE_DELAY_MS = 250;
 const DATA_REQUEST_PERIOD_MS = 2000;
 
 export interface BLEServiceProps {
-    setScooterDataModel: (setter: (prev: LeScooterDataModel) => LeScooterDataModel) => void;
+    setScooterBLEData: (data: LeScooterBLEData) => void;
     setBleServiceControl: (bleServiceControl: BLEServiceControl) => void;
 }
 
-const _BLEService = ({ setScooterDataModel, setBleServiceControl }: BLEServiceProps) => {
+const _BLEService = ({ setScooterBLEData, setBleServiceControl }: BLEServiceProps) => {
     // Throttled data updater
-    const setNewData = useThrottle(
-        {} as LeScooterDataModel,
-        delayedData => setScooterDataModel(prev => Object.keys(delayedData).length? {...prev, ...delayedData} : {} as LeScooterDataModel),
-        DATA_THROTTLE_DELAY_MS
-    );
+    const setNewData = useThrottle(null as LeScooterBLEData, setScooterBLEData, DATA_THROTTLE_DELAY_MS);
 
     // Maintain connection
     const cacheDevice = React.useRef<BluetoothDevice>();
@@ -41,10 +37,10 @@ const _BLEService = ({ setScooterDataModel, setBleServiceControl }: BLEServicePr
     // Subscribe to connection received data
     React.useEffect(() => {
         if(!connection) return;
-        connection.setOnReceive((tag, value) => setNewData(prev => ({ ...prev, [tag]: value })));
+        connection.setOnReceive((tag, value) => setNewData(prev => ({ ...(prev ?? {}), [tag]: value } as LeScooterBLEData)));
         return () => {
             connection.setOnReceive(undefined);
-            setNewData(() => ({} as LeScooterDataModel));
+            setNewData(null);
         };
     }, [ connection ]);
 

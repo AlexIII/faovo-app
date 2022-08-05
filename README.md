@@ -17,9 +17,9 @@ Consider this highly experimental.
 - ✔️ Windows Google Chrome
 - ✔️ Windows Edge
 - ✔️✖ Android Chrome
-  - You will need to activate experimental features, navigate to `chrome://flags/#enable-experimental-web-platform-features`.
+  - You will need to activate experimental features, for this navigate to `chrome://flags/#enable-experimental-web-platform-features`.
   The Bluetooth may not connect on the first try.
-- ❓ Opera Android - theoretically supported, not tested
+- ❓ Android Opera - theoretically supported, not tested
 - ❓ Samsung Internet - theoretically supported, not tested
 
 ## Reason
@@ -30,6 +30,14 @@ LENZOD is a horrible app (on the inside too!). I rest my case.
 
 1. No other app except LENZOD is working with the fake AOVO
 2. Watch [this video](https://youtu.be/DFh4OfBI1Jg?t=1325)
+
+## TO-DO
+
+- Add user input for correction coefficients for the speed and distance
+- Add a switch for cruise control (on/off)
++ Do not show old values on app wake up
++ Add mean ride speed
+- Add chrome "experimental features" in-app flag notification
 
 ## License
 

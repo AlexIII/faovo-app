@@ -2,8 +2,7 @@ import { h, Fragment } from 'preact';
 import * as React from 'preact/compat';
 import * as U from 'Utils';
 import { Space, Grid } from "antd-mobile";
-import { ScooterDataModelContext } from 'components/App';
-import { LeMessageTag } from 'LeProtocol';
+import { LeScooterDataModel, ScooterDataModelContext } from 'components/App';
 
 const _SecondaryStats = ({}) => {
     const scooterData = React.useContext(ScooterDataModelContext);
@@ -19,8 +18,9 @@ const SecondaryStats = React.memo(_SecondaryStats);
 
 export { SecondaryStats };
 
-const StatsEntries: { key: keyof typeof LeMessageTag; title: string; unit?: string; }[] = [
+const StatsEntries: { key: keyof LeScooterDataModel; title: string; unit?: string; }[] = [
     { key: 'SPEED', title: 'Speed', unit: 'km/h' },
+    { key: 'AVG_SPEED', title: 'Average speed', unit: 'km/h' },
     { key: 'TOTAL_MILAGE', title: 'Total milage', unit: 'km' },
 ];
 

@@ -6,7 +6,11 @@ import { BLEService } from './BLEService';
 import { useConnection } from 'hooks';
 import * as Package from 'package.json';
 
-export type LeScooterDataModel = Record<keyof typeof LeMessageTag, number | string | undefined>;
+const INVALIDATE_MODEL_DELAY_MS = 5000;
+
+type LeScooterComputedData = { AVG_SPEED: number | undefined; };
+export type LeScooterBLEData = Record<keyof typeof LeMessageTag, number | string | undefined> | null;
+export type LeScooterDataModel = LeScooterBLEData & LeScooterComputedData;
 export const ScooterDataModelContext = React.createContext({} as LeScooterDataModel);
 
 export type BLEServiceControl = Omit<ReturnType<typeof useConnection>, 'connection'>;
@@ -16,7 +20,7 @@ const _PRERENDER = typeof window === "undefined";
 const bluetoothSupported = typeof window !== "undefined" && 'bluetooth' in navigator;
 
 const App = ({}) => {
-    const [ scooterDataModel, setScooterDataModel ] = React.useState<LeScooterDataModel>({} as LeScooterDataModel);
+    const [ scooterDataModel, setScooterBLEData ] = React.useReducer<LeScooterDataModel, LeScooterBLEData>(computeModel, {} as LeScooterDataModel);
     const [ bleServiceControl, setBleServiceControl ] = React.useState<BLEServiceControl | undefined>(undefined);
 
     if(!_PRERENDER && !bluetoothSupported) {
@@ -24,14 +28,29 @@ const App = ({}) => {
         return <NoSupportScreen message={message} />;
     }
 
+    // Invalidate data model on timeout
+    React.useEffect(() => {
+        const handle = setTimeout(() => setScooterBLEData(null), INVALIDATE_MODEL_DELAY_MS);
+        return () => clearTimeout(handle);
+    } , [ scooterDataModel ]);
+
     return <BLEServiceControlContext.Provider value={bleServiceControl}>
         <ScooterDataModelContext.Provider value={scooterDataModel}>
-            <BLEService setScooterDataModel={setScooterDataModel} setBleServiceControl={setBleServiceControl} />
+            <BLEService setScooterBLEData={setScooterBLEData} setBleServiceControl={setBleServiceControl} />
             <UI />
         </ScooterDataModelContext.Provider>
     </BLEServiceControlContext.Provider>;
 };
 
 export default App;
+
+const computeModel = (prev: LeScooterDataModel, data: LeScooterBLEData): LeScooterDataModel => {
+    if(!data) return {} as LeScooterDataModel;
+    const newData = { ...prev, ...data };
+    const AVG_SPEED = (typeof newData['RIDE_TIME'] === 'number') && (typeof newData['RIDE_MILAGE'] === 'number') && newData['RIDE_TIME'] > 2
+        ? newData['RIDE_MILAGE'] / (newData['RIDE_TIME'] / 60)
+        : undefined;
+    return { ...newData, AVG_SPEED };
+};
 
 console.log(`${Package.name} v${Package.version}`);
