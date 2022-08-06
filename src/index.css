@@ -65,7 +65,7 @@ p {
 }
 
 .text-secondary-meter {
-  font-size: 1.6em;
+  font-size: calc(min(max(2.5vw, 9pt), 1.6em));
   font-weight: 400;
 }
 
