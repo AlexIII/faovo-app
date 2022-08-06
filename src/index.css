@@ -20,8 +20,7 @@ code {
   flex-direction: column;
   justify-content: center;
   padding: 10px;
-  min-width: 50vw;
-  max-width: 95vw;
+  width: 95vw;
 }
 
 .dot {

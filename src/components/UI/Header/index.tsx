@@ -13,16 +13,19 @@ const Header = () => {
     const [ settingsVisible, openSettings, closeSettings ] = useModal();
 
     return <Space align='center' justify='between' block>
-        <Button onClick={openSettings} ><SetOutline /></Button>
-        <ConnectionButton />
-        <p>🔋{ U.valueToString(scooterData['BATTERY_CHARGE'], 0, '--', '%') }</p>
 
-        <Modal
-            visible={settingsVisible}
-            closeOnMaskClick
-            onClose={closeSettings}
-            content={<Settings onClose={closeSettings} />}
-        />
+        <Button onClick={openSettings} >
+            <SetOutline />
+            <Modal
+                visible={settingsVisible}
+                closeOnMaskClick
+                onClose={closeSettings}
+                content={<Settings onClose={closeSettings} />}
+            /></Button>
+
+        <ConnectionButton />
+
+        <p>🔋{ U.valueToString(scooterData['BATTERY_CHARGE'], 0, '--', '%') }</p>
     </Space>;
 };
 
