@@ -26,8 +26,9 @@ export { SecondaryStats };
 
 const StatsEntries: { key: keyof LeScooterDataModel; title: string; unit?: string; applyCorrection?: boolean }[] = [
     { key: 'SPEED', title: 'Speed', unit: 'km/h', applyCorrection: true },
-    { key: 'AVG_SPEED', title: 'Average speed', unit: 'km/h', applyCorrection: true },
+    { key: 'AVG_SPEED', title: 'Avg speed', unit: 'km/h', applyCorrection: true },
     { key: 'TOTAL_MILAGE', title: 'Total milage', unit: 'km', applyCorrection: true },
+    { key: 'TEMPERATURE', title: 'Temperature', unit: '°С' }
 ];
 
 export interface StatsEntryProps {

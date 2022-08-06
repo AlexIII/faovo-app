@@ -57,9 +57,16 @@ export class LeScooterBLE {
         this.onReceive.current = onReceive;
     }
 
-    async requestData() {
+    requestData() {
+        return this.command(LeMessage.REQUEST_STATUS_PREBUILD);
+    }
+
+    command(data: Uint8Array): Promise<void>;
+    command(tag: LeMessageTag, args?: number[]): Promise<void>;
+    async command(tag_or_data: Uint8Array | LeMessageTag, args?: number[]) {
         try {
-            return await this.connection.write(LeMessage.REQUEST_STATUS_PREBUILD);
+            tag_or_data = tag_or_data instanceof Uint8Array? tag_or_data : LeMessage.build(tag_or_data, args ?? []);
+            return await this.connection.write(tag_or_data);
         } catch(err) {
             console.log(`BLE GATT write error: ${err}`);
             throw err;

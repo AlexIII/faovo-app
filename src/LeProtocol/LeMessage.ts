@@ -19,6 +19,13 @@ export enum LeMessageTag {
     RIDE_TIME = 0x22,           // ??
 }
 
+export enum LeMessageArg {
+    CRUISE_CONTROL_ON = 1,
+    CRUISE_CONTROL_OFF = 2,
+    LOCK_ON = 2,
+    LOCK_OFF = 1
+}
+
 export class LeMessage {
     private static readonly PREAMBLE = [0xFF, 0x55];
     static readonly REQUEST_STATUS_PREBUILD = LeMessage.build(LeMessageTag.REQUEST_STATUS, []);

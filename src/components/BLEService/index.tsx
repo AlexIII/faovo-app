@@ -1,12 +1,18 @@
-import { BLEServiceControl, LeScooterBLEData } from 'components/App';
 import * as React from 'preact/compat';
+import { LeScooterBLEData } from 'components/App';
 import { useConnection, useThrottle } from 'hooks';
 import { LeScooterBLE } from './LeScooterBLE';
+import { LeMessageArg, LeMessageTag } from 'LeProtocol';
 
 const AUTO_RECONNECT_DELAY_MS = 2000;
 const AUTO_RECONNECT_ATTEMPTS = 3;
 const DATA_THROTTLE_DELAY_MS = 250;
 const DATA_REQUEST_PERIOD_MS = 2000;
+
+export interface BLEServiceControl extends Omit<ReturnType<typeof useConnection>, 'connection'> {
+    setLock(isOn: boolean): Promise<void>;
+    setCruiseControl(isOn: boolean): Promise<void>;
+}
 
 export interface BLEServiceProps {
     setScooterBLEData: (data: LeScooterBLEData) => void;
@@ -45,7 +51,13 @@ const _BLEService = ({ setScooterBLEData, setBleServiceControl }: BLEServiceProp
     }, [ connection ]);
 
     // Update connection controls and status
-    React.useEffect(() => setBleServiceControl(connectionControl), [ ...Object.values(connectionControl) ]);
+    React.useEffect(() => {
+        const setLock = (isOn: boolean) =>
+            connection?.command(LeMessageTag.LOCK_MODE, [ isOn? LeMessageArg.LOCK_ON : LeMessageArg.LOCK_OFF ]) ?? Promise.reject("No connection");
+        const setCruiseControl = (isOn: boolean) =>
+            connection?.command(LeMessageTag.CRUISE_CONTROL, [ isOn? LeMessageArg.CRUISE_CONTROL_ON : LeMessageArg.CRUISE_CONTROL_OFF ]) ?? Promise.reject("No connection");
+        setBleServiceControl({ ...connectionControl, setLock, setCruiseControl });
+    }, [ connection, ...Object.values(connectionControl) ]);
 
     // Request data periodically
     React.useEffect(() => {

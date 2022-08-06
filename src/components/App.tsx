@@ -2,8 +2,7 @@ import { h } from 'preact';
 import * as React from 'preact/compat';
 import { LeMessageTag } from 'LeProtocol';
 import { UI, NoSupportScreen } from './UI';
-import { BLEService } from './BLEService';
-import { useConnection } from 'hooks';
+import { BLEService, BLEServiceControl } from './BLEService';
 import * as Package from 'package.json';
 import { AppConfigProvider } from './AppConfig';
 
@@ -14,7 +13,6 @@ export type LeScooterBLEData = Record<keyof typeof LeMessageTag, number | string
 export type LeScooterDataModel = LeScooterBLEData & LeScooterComputedData;
 export const ScooterDataModelContext = React.createContext({} as LeScooterDataModel);
 
-export type BLEServiceControl = Omit<ReturnType<typeof useConnection>, 'connection'>;
 export const BLEServiceControlContext = React.createContext<BLEServiceControl | undefined>(undefined);
 
 const _PRERENDER = typeof window === "undefined";

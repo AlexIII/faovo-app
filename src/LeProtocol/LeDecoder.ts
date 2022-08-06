@@ -1,4 +1,4 @@
-import { LeMessage, LeMessageTag } from "./LeMessage";
+import { LeMessage, LeMessageArg, LeMessageTag } from "./LeMessage";
 import * as U from 'Utils';
 
 export interface LeDecoder {
@@ -55,14 +55,16 @@ const decoderSpeedMode: LeDecoder = {
 const decoderTemperature: LeDecoder = {
     TAG: LeMessageTag.TEMPERATURE,
     decodeArg: args => {
-        throw new Error(`${LeMessageTag[LeMessageTag.TEMPERATURE]} is not implemented`);
+        assertArgsLength(args, 1, LeMessageTag.TEMPERATURE);
+        return args[0];
     }
 };
 
 const decoderLockMode: LeDecoder = {
     TAG: LeMessageTag.LOCK_MODE,
     decodeArg: args => {
-        throw new Error(`${LeMessageTag[LeMessageTag.LOCK_MODE]} is not implemented`);
+        assertArgsLength(args, 1, LeMessageTag.LOCK_MODE);
+        return args[0] === LeMessageArg.LOCK_OFF? 0 : 1;
     }
 };
 
@@ -97,7 +99,8 @@ const decoderWheelDiameterMode: LeDecoder = {
 const decoderCruiseControl: LeDecoder = {
     TAG: LeMessageTag.CRUISE_CONTROL,
     decodeArg: args => {
-        throw new Error(`${LeMessageTag[LeMessageTag.CRUISE_CONTROL]} is not implemented`);
+        assertArgsLength(args, 1, LeMessageTag.CRUISE_CONTROL);
+        return args[0] === LeMessageArg.CRUISE_CONTROL_ON? 1 : 0;
     }
 };
 
@@ -117,7 +120,8 @@ const decoderRideTime: LeDecoder = {
 };
 
 const leDecoders = U.index([
-    decoderSpeed, decoderRideMileage, decoderTotalMileage, decoderBatteryCharge, decoderRideTime
+    decoderSpeed, decoderRideMileage, decoderTotalMileage, decoderBatteryCharge, decoderRideTime,
+    decoderTemperature, decoderLockMode, decoderCruiseControl,
 ], x => String(x.TAG));
 
 export const leDecode = (msg: LeMessage): string | number | undefined => leDecoders[msg.tag]?.decodeArg(msg.args);
