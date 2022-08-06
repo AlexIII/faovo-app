@@ -69,6 +69,11 @@ p {
   font-weight: 400;
 }
 
+.text-center-pre-warp {
+  white-space: pre-wrap;
+  text-align: center;
+}
+
 .text-footer {
   margin-top: 0.6rem;
   font-size: 0.8rem;

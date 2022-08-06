@@ -16,3 +16,22 @@ export { defApply };
 
 export const valueToString = (value: string | number | undefined, fractionDigits = 0, placeholder = '-', suffix = '') =>
     value === undefined ? placeholder : ( (typeof value === 'number' ? value.toFixed(fractionDigits) : value) + suffix );
+
+export namespace WEB {
+    /* Access localStorage. The function returns tuple of getter and setter */
+    export const accessLocalStorage = <S>(key: string, initialValue?: S): [() => S, (value: S) => void] => {
+        return [
+            () => {
+                const str = localStorage.getItem(key);
+                if(str) {
+                    try { return JSON.parse(str); } catch {}
+                }
+                return initialValue;
+            },
+            value => {
+                if(value === undefined) localStorage.removeItem(key);
+                else localStorage.setItem(key, JSON.stringify(value));
+            }
+        ];
+    };
+}

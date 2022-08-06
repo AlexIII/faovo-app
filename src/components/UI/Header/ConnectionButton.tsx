@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import * as React from 'preact/compat';
-import { Button, Modal } from "antd-mobile";
+import * as U from 'Utils';
+import { Button, Modal, AutoCenter } from "antd-mobile";
 import { BLEServiceControlContext } from 'components/App';
 
 const _ConnectionButton = ({}) => {
@@ -15,6 +16,7 @@ const _ConnectionButton = ({}) => {
     // Report connection error
     React.useEffect(() => {
         if(bleServiceControl?.error && !bleServiceControl?.connecting && !bleServiceControl?.reconnectPending) {
+            showAndroidChromeHint();
             Modal.alert({ content: 'Could not connect to Bluetooth device', confirmText: 'OK' });
         }
     }, [ bleServiceControl?.error, bleServiceControl?.connecting, bleServiceControl?.reconnectPending ]);
@@ -33,4 +35,18 @@ const STATUS_TO_CSS_CLASS = {
     "Connecting...":    "color-wait",
     "Offline":          "color-offline"
 };
+
+const showAndroidChromeHint = () => {
+    if(!('chrome' in window)) return;
+    const isAndroid = /android/i.test(navigator.userAgent);
+    if(!isAndroid) return;
+    const [ getShowHint, setShowHint ] = U.WEB.accessLocalStorage("showChromeHintEnableExperimental", true);
+    if(!getShowHint()) return;
+    Modal.confirm({
+        content: <p className="text-center-pre-warp">{'Having problems with establishing connection? \nTry typing in the URL bar "chrome://flags" and enabling "experimental-web-platform-features".'}</p>,
+        confirmText: 'OK',
+        cancelText: "Don't show again",
+        onCancel: () => setShowHint(false)
+    });
+}
 

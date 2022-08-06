@@ -37,7 +37,7 @@ LENZOD is a horrible app (on the inside too!). I rest my case.
 - Add a switch for cruise control (on/off)
 + Do not show old values on app wake up
 + Add mean ride speed
-- Add chrome "experimental features" in-app flag notification
++ Add chrome "experimental features flag" in-app notification
 
 ## License
 
