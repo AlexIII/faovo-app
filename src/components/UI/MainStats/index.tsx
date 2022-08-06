@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import * as React from 'preact/compat';
 import * as U from 'Utils';
-import { Space } from "antd-mobile";
+import { Space } from 'antd-mobile';
 import { ScooterDataModelContext } from 'components/App';
 import { AppConfigContext } from 'components/AppConfig';
 

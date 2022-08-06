@@ -1,8 +1,8 @@
 import { h } from 'preact';
 import * as React from 'preact/compat';
 import * as U from 'Utils';
-import { Button, Space, Modal } from "antd-mobile";
-import { SetOutline } from "antd-mobile-icons";
+import { Button, Space, Modal } from 'antd-mobile';
+import { SetOutline } from 'antd-mobile-icons';
 import { ConnectionButton } from './ConnectionButton';
 import { ScooterDataModelContext } from 'components/App';
 import { Settings } from './Settings';
@@ -19,6 +19,8 @@ const Header = () => {
 
         <Modal
             visible={settingsVisible}
+            closeOnMaskClick
+            onClose={closeSettings}
             content={<Settings onClose={closeSettings} />}
         />
     </Space>;

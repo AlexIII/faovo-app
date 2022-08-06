@@ -1,9 +1,10 @@
 import { h } from 'preact';
 import * as React from 'preact/compat';
-import { Card, Divider } from "antd-mobile";
+import { Card, Divider } from 'antd-mobile';
 import { Header } from './Header';
 import { MainStats } from './MainStats';
 import { SecondaryStats } from './SecondaryStats';
+import { Lock } from './Lock';
 import * as Package from 'package.json';
 
 // Activate dark theme
@@ -18,6 +19,7 @@ const _UI = ({}) =>
         <MainStats />
         <Divider />
         <SecondaryStats />
+        <Lock />
     </MainContainer>
 ;
 
