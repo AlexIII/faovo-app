@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import * as React from 'preact/compat';
 import * as U from 'Utils';
-import { Button, Modal, AutoCenter } from "antd-mobile";
+import { Button, Modal } from "antd-mobile";
 import { BLEServiceControlContext } from 'components/App';
 
 const _ConnectionButton = ({}) => {
@@ -48,5 +48,4 @@ const showAndroidChromeHint = () => {
         cancelText: "Don't show again",
         onCancel: () => setShowHint(false)
     });
-}
-
+};

@@ -5,6 +5,7 @@ import { UI, NoSupportScreen } from './UI';
 import { BLEService } from './BLEService';
 import { useConnection } from 'hooks';
 import * as Package from 'package.json';
+import { AppConfigProvider } from './AppConfig';
 
 const INVALIDATE_MODEL_DELAY_MS = 5000;
 
@@ -23,23 +24,25 @@ const App = ({}) => {
     const [ scooterDataModel, setScooterBLEData ] = React.useReducer<LeScooterDataModel, LeScooterBLEData>(computeModel, {} as LeScooterDataModel);
     const [ bleServiceControl, setBleServiceControl ] = React.useState<BLEServiceControl | undefined>(undefined);
 
-    if(!_PRERENDER && !bluetoothSupported) {
-        const message = 'Your browser does not support Bluetooth. \nTry latest Google Chrome.';
-        return <NoSupportScreen message={message} />;
-    }
-
     // Invalidate data model on timeout
     React.useEffect(() => {
         const handle = setTimeout(() => setScooterBLEData(null), INVALIDATE_MODEL_DELAY_MS);
         return () => clearTimeout(handle);
     } , [ scooterDataModel ]);
 
-    return <BLEServiceControlContext.Provider value={bleServiceControl}>
-        <ScooterDataModelContext.Provider value={scooterDataModel}>
-            <BLEService setScooterBLEData={setScooterBLEData} setBleServiceControl={setBleServiceControl} />
-            <UI />
-        </ScooterDataModelContext.Provider>
-    </BLEServiceControlContext.Provider>;
+    if(!_PRERENDER && !bluetoothSupported) {
+        const message = 'Your browser does not support Bluetooth. \nTry latest Google Chrome.';
+        return <NoSupportScreen message={message} />;
+    }
+
+    return <AppConfigProvider>
+        <BLEServiceControlContext.Provider value={bleServiceControl}>
+            <ScooterDataModelContext.Provider value={scooterDataModel}>
+                <BLEService setScooterBLEData={setScooterBLEData} setBleServiceControl={setBleServiceControl} />
+                <UI />
+            </ScooterDataModelContext.Provider>
+        </BLEServiceControlContext.Provider>
+    </AppConfigProvider>;
 };
 
 export default App;

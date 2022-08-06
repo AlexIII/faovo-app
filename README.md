@@ -33,8 +33,9 @@ LENZOD is a horrible app (on the inside too!). I rest my case.
 
 ## TO-DO
 
-- Add user input for correction coefficients for the speed and distance
++ Add user input for correction coefficients for the speed and distance
 - Add a switch for cruise control (on/off)
+- Add lock/unlock switch
 + Do not show old values on app wake up
 + Add mean ride speed
 + Add chrome "experimental features flag" in-app notification

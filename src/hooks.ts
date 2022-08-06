@@ -1,4 +1,5 @@
 import * as React from 'preact/compat';
+import * as U from 'Utils';
 
 declare module 'preact/compat' {
     function useReducer<S>(reducer: (prev: S) => S, initialState: S): [S, () => void];
@@ -86,3 +87,35 @@ export const useThrottle = <S>(initialValue: S, update: (value: S) => void, dela
 
     return setDelayedValue;
 };
+
+const LocalStorageHookGlobalKeyPrefix = 'react-backed-state.';
+export const LocalStoragePrefixContext = React.createContext('');
+export const LocalStoragePrefix = LocalStoragePrefixContext.Provider;
+
+/* Mimics React.useState, but restores last state value from localStorage after every component remount. */
+function useLocalStorage<S>(key: string, initialState: S | (() => S)): [ S, React.StateUpdater<S> ];
+function useLocalStorage<S = undefined>(key: string): [ S, React.StateUpdater<S | undefined> ];
+function useLocalStorage(key: string, initialState?: any) {
+    const prefix = React.useContext(LocalStoragePrefixContext);
+    return React.useReducer<any, any, undefined>(
+        (prvState: any, newState: any) => {
+            const val = newState instanceof Function? newState(prvState) : newState;
+            U.WEB.accessLocalStorage(LocalStorageHookGlobalKeyPrefix + prefix + key)[1](val);
+            return val;
+        },
+        undefined,
+        () => U.WEB.accessLocalStorage(LocalStorageHookGlobalKeyPrefix + prefix + key, initialState instanceof Function? initialState() : initialState)[0]()
+    );
+}
+export { useLocalStorage };
+
+/* Hook for modal element state */
+export function useModal(initial?: boolean) : [isOpen: boolean, open: () => void, close: () => void];
+export function useModal<T extends {}>(initial: T | null) : [isOpen: T | null, open: (arg: T) => void, close: () => void];
+export function useModal(initial: any = false): [isOpen: any, open: (arg: any) => void, close: () => void] {
+    const isNoArg = React.useRef(initial === false || initial === true).current;
+    const [isOpen, setOpen] = React.useState(initial);
+    const open = React.useCallback((arg: any) => setOpen(isNoArg? true : arg), []);
+    const close = React.useCallback(() => setOpen(isNoArg? false : null), []);
+    return [isOpen, open, close];
+}

@@ -14,9 +14,10 @@ function defApply<T, V>(val: T, fun: (a: NonNullable<T>) => V, def?: V) : V | un
 }
 export { defApply };
 
-export const valueToString = (value: string | number | undefined, fractionDigits = 0, placeholder = '-', suffix = '') =>
-    value === undefined ? placeholder : ( (typeof value === 'number' ? value.toFixed(fractionDigits) : value) + suffix );
+export const valueToString = (value: string | number | undefined, fractionDigits = 0, placeholder = '-', suffix = '', convertNumber = (val: number) => val) =>
+    value === undefined ? placeholder : ( (typeof value === 'number' ? convertNumber(value).toFixed(fractionDigits) : value) + suffix );
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace WEB {
     /* Access localStorage. The function returns tuple of getter and setter */
     export const accessLocalStorage = <S>(key: string, initialValue?: S): [() => S, (value: S) => void] => {

@@ -3,10 +3,11 @@ import * as React from 'preact/compat';
 import * as U from 'Utils';
 import { Space } from "antd-mobile";
 import { ScooterDataModelContext } from 'components/App';
-
+import { AppConfigContext } from 'components/AppConfig';
 
 const MainStats = ({}) => {
     const scooterData = React.useContext(ScooterDataModelContext);
+    const [ config ] = React.useContext(AppConfigContext);
 
     return <Space align='center' justify='evenly' block>
         <Space align='center'><p className='text-mine-meter'>
@@ -15,7 +16,7 @@ const MainStats = ({}) => {
         </p></Space>
 
         <Space align='center'><p className='text-mine-meter'>
-            { U.valueToString(scooterData['RIDE_MILAGE'], 1, '--') }
+            { U.valueToString(scooterData['RIDE_MILAGE'], 1, '--', '', val => val * config.distanceCorrectionMul) }
             <sub className='text-units'>km</sub>
         </p></Space>
     </Space>;
