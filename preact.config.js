@@ -12,4 +12,7 @@
 export default (config, env, helpers) => {
     config.resolve.modules.push(env.src);
     config.resolve.modules.push(env.cwd);
+    if (env.production) {
+        config.output.publicPath = 'https://alexiii.github.io/faovo-app';
+    }
 };
