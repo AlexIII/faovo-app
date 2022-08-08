@@ -36,18 +36,17 @@ const requestBLEDeviceAndConnect = async (
             } catch(e) {
                 lastError = e as Error;
                 console.log('BLE device connect failed, retrying...');
-                await U.delay(1000);
+                await U.delay(500);
             }
         }
         throw lastError;
     })();
     console.log('BLE device connected');
-    await U.delay(1000);
+    await U.delay(500);
     const service = await server.getPrimaryService(serviceUUID);
     console.log('BLE device got service');
     const characteristics = await Promise.all(characteristicUUIDs.map(char => service.getCharacteristic(char)));
     console.log('BLE device got characteristics');
-    await U.delay(500);
 
     return { disconnect: () => server.disconnect(), characteristics };
 };

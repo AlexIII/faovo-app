@@ -3,6 +3,7 @@ import { LeScooterBLEData } from 'components/App';
 import { useConnection, useThrottle } from 'hooks';
 import { LeScooterBLE } from './LeScooterBLE';
 import { LeMessageArg, LeMessageTag } from 'LeProtocol';
+import * as U from 'Utils';
 
 const AUTO_RECONNECT_DELAY_MS = 2000;
 const AUTO_RECONNECT_ATTEMPTS = 3;
@@ -62,9 +63,16 @@ const _BLEService = ({ setScooterBLEData, setBleServiceControl }: BLEServiceProp
     // Request data periodically
     React.useEffect(() => {
         if(!connection) return;
-        const requestData = () => void connection.requestData().catch(console.log);
-        requestData();
-        const handle = setInterval(requestData, DATA_REQUEST_PERIOD_MS);
+        const requestData = async () => {
+            try { return await connection.requestData(); }
+            catch(err) {
+                console.error(err);
+                await U.delay(DATA_REQUEST_PERIOD_MS / 3);
+                return await connection.requestData();
+            }
+        };
+        void requestData();
+        const handle = setInterval(() => void requestData(), DATA_REQUEST_PERIOD_MS);
         return () => clearInterval(handle);
     }, [ connection ]);
 
