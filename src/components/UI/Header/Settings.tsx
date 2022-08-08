@@ -20,20 +20,14 @@ const _Settings = ({ onClose }: SettingsProps) => {
         void bleServiceControl?.setCruiseControl(isOn);
     };
 
-    const apply = (data: Partial<AppConfig>) => {
-        setConfig(conf => ({ ...conf, ...data}));
-        onClose();
-    };
-
     return <Space>
         <Form
             layout='horizontal'
             footer={
-                <Button block type='submit' color='primary' size='large'>
-                    Apply
-                </Button>
+                <Button block type='submit' color='primary' size='large'>Close</Button>
             }
-            onFinish={apply}
+            onFinish={onClose}
+            onChange={(data: Partial<AppConfig>) => setConfig(conf => ({ ...conf, ...data}))}
             initialValues={config}
         >
             <Form.Header>Settings</Form.Header>
