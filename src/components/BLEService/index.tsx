@@ -62,7 +62,7 @@ const _BLEService = ({ setScooterBLEData, setBleServiceControl }: BLEServiceProp
     // Request data periodically
     React.useEffect(() => {
         if(!connection) return;
-        const requestData = () => void connection.requestData().catch(() => connection.disconnect());
+        const requestData = () => void connection.requestData().catch(console.log);
         requestData();
         const handle = setInterval(requestData, DATA_REQUEST_PERIOD_MS);
         return () => clearInterval(handle);

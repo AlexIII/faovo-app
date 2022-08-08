@@ -1,4 +1,7 @@
 import { LeMessage, LeMessageTag, leDecode } from 'LeProtocol';
+import * as U from 'Utils';
+
+const RECONNECT_ATTEMPTS = 5;
 
 const requestBLEDeviceAndConnect = async (
     serviceUUID: string,
@@ -22,13 +25,29 @@ const requestBLEDeviceAndConnect = async (
         onDisconnect(new Error('Device disconnected'));
     };
     device.addEventListener('gattserverdisconnected', handleDisconnect);
-    console.log('BLE device listening close');
-    const server = await device.gatt.connect();
+    console.log('BLE device listening on disconnect');
+    const server = await (async () => {
+        if(!device.gatt) throw new Error('Device has no GATT service');
+        let lastError: Error | undefined;
+        // Silently attempt reconnect 5 times
+        for(let i = 0; i < RECONNECT_ATTEMPTS; ++ i) {
+            try {
+                return await device.gatt.connect();
+            } catch(e) {
+                lastError = e as Error;
+                console.log('BLE device connect failed, retrying...');
+                await U.delay(1000);
+            }
+        }
+        throw lastError;
+    })();
     console.log('BLE device connected');
+    await U.delay(1000);
     const service = await server.getPrimaryService(serviceUUID);
     console.log('BLE device got service');
     const characteristics = await Promise.all(characteristicUUIDs.map(char => service.getCharacteristic(char)));
     console.log('BLE device got characteristics');
+    await U.delay(500);
 
     return { disconnect: () => server.disconnect(), characteristics };
 };
