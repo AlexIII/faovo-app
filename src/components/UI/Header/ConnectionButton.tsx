@@ -17,7 +17,7 @@ const _ConnectionButton = ({}) => {
     React.useEffect(() => {
         if(bleServiceControl?.error && !bleServiceControl?.connecting && !bleServiceControl?.reconnectPending) {
             showAndroidChromeHint();
-            Modal.alert({ content: 'Could not connect to Bluetooth device', confirmText: 'OK' });
+            Modal.alert({ content: 'Could not connect to Bluetooth device', confirmText: 'OK', closeOnMaskClick: true });
         }
     }, [ bleServiceControl?.error, bleServiceControl?.connecting, bleServiceControl?.reconnectPending ]);
 
@@ -46,6 +46,7 @@ const showAndroidChromeHint = () => {
         content: <p className="text-center-pre-warp">{'Having problems with establishing connection? \nTry typing in the URL bar "chrome://flags" and enabling "experimental-web-platform-features".'}</p>,
         confirmText: 'OK',
         cancelText: "Don't show again",
-        onCancel: () => setShowHint(false)
+        onCancel: () => setShowHint(false),
+        closeOnMaskClick: true
     });
 };

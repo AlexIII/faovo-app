@@ -9,7 +9,7 @@
     "url": "https://github.com/AlexIII"
   },
   "scripts": {
-    "build": "preact build",
+    "build": "preact build --no-prerender",
     "serve": "sirv build --cors --single",
     "dev": "preact watch",
     "lint": "eslint src"
@@ -25,6 +25,7 @@
         "error",
         "consistent"
       ],
+      "prefer-template": "off",
       "react-hooks/exhaustive-deps": "off",
       "no-useless-constructor": "off",
       "@typescript-eslint/no-explicit-any": "off",
