@@ -1,19 +1,16 @@
 import { h } from 'preact';
-import * as React from 'preact/compat';
-import * as U from 'Utils';
 import { Button, Space, Modal } from 'antd-mobile';
-import { SetOutline } from 'antd-mobile-icons';
+import { SetOutline, HistogramOutline } from 'antd-mobile-icons';
 import { ConnectionButton } from './ConnectionButton';
-import { ScooterDataModelContext } from 'components/App';
 import { Settings } from './Settings';
 import { useModal } from 'hooks';
+import { HistoryView } from 'components/History';
 
 const Header = () => {
-    const scooterData = React.useContext(ScooterDataModelContext);
     const [ settingsVisible, openSettings, closeSettings ] = useModal();
+    const [ historyVisible, openHistory, closeHistory ] = useModal();
 
     return <Space align='center' justify='between' block>
-
         <Button onClick={openSettings} >
             <SetOutline />
             <Modal
@@ -21,11 +18,20 @@ const Header = () => {
                 closeOnMaskClick
                 onClose={closeSettings}
                 content={<Settings onClose={closeSettings} />}
-            /></Button>
+            />
+        </Button>
 
         <ConnectionButton />
 
-        <p>🔋{ U.valueToString(scooterData['BATTERY_CHARGE'], 0, '--', '%') }</p>
+        <Button onClick={openHistory} >
+            <HistogramOutline />
+            <Modal
+                visible={historyVisible}
+                closeOnMaskClick
+                onClose={closeHistory}
+                content={<HistoryView onClose={closeHistory} />}
+            />
+        </Button>
     </Space>;
 };
 

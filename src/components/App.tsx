@@ -5,6 +5,7 @@ import { UI, NoSupportScreen } from './UI';
 import { BLEService, BLEServiceControl } from './BLEService';
 import * as Package from 'package.json';
 import { AppConfigProvider } from './AppConfig';
+import { HistoryLogic } from './History';
 
 const INVALIDATE_MODEL_DELAY_MS = 5000;
 
@@ -37,7 +38,9 @@ const App = ({}) => {
         <BLEServiceControlContext.Provider value={bleServiceControl}>
             <ScooterDataModelContext.Provider value={scooterDataModel}>
                 <BLEService setScooterBLEData={setScooterBLEData} setBleServiceControl={setBleServiceControl} />
-                <UI />
+                <HistoryLogic>
+                    <UI />
+                </HistoryLogic>
             </ScooterDataModelContext.Provider>
         </BLEServiceControlContext.Provider>
     </AppConfigProvider>;

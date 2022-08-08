@@ -6,7 +6,7 @@ export enum LeMessageTag {
     SPEED = 0x0A,
     RIDE_MILAGE = 0x0B,
     TOTAL_MILAGE = 0x0C,
-    BATTERY_CHARGE = 0x0D,
+    BATTERY_LEVEL = 0x0D,
     SPEED_MODE = 0x10,          // rate_limiting (ride mode?)
     TEMPERATURE = 0x11,         // ??
     LOCK_MODE = 0x17,

@@ -59,8 +59,9 @@ p {
 }
 
 .text-mine-meter {
-  font-size: 4em;
+  font-size: 3.6em;
   font-weight: 500;
+  margin-bottom: -0.5em;
 }
 
 .text-secondary-meter {
@@ -80,4 +81,16 @@ p {
   width: 100%;
   color: #CCC;
   white-space: pre-wrap;
+}
+
+.history-entry-value {
+  font-size: calc(min(max(3vw, 8pt), 2em));
+  white-space: nowrap;
+  margin-right: 1em;
+}
+
+.history-entry-time {
+  font-size: calc(min(max(3vw, 8pt), 2em) * 0.7);
+  color: #CCC;
+  text-align: left;
 }

@@ -38,9 +38,9 @@ const decoderTotalMileage: LeDecoder = {
 };
 
 const decoderBatteryCharge: LeDecoder = {
-    TAG: LeMessageTag.BATTERY_CHARGE,
+    TAG: LeMessageTag.BATTERY_LEVEL,
     decodeArg: args => {
-        assertArgsLength(args, 1, LeMessageTag.BATTERY_CHARGE);
+        assertArgsLength(args, 1, LeMessageTag.BATTERY_LEVEL);
         return args[0];
     }
 };

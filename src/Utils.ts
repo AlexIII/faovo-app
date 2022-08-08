@@ -42,3 +42,7 @@ export namespace WEB {
         ];
     };
 }
+
+// Promise that resolves with 'val' after timeout 'ms'
+export const delay = <T = any>(ms: number, val?: T): Promise<T> =>
+    new Promise(res => setTimeout(() => res(val as T), ms));
