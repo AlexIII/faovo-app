@@ -1,8 +1,8 @@
-import { h } from 'preact';
-import * as React from 'preact/compat';
-import { Button, Space, Form, Stepper, Switch } from 'antd-mobile';
-import { AppConfig, AppConfigContext } from 'components/AppConfig';
+import * as React from 'react';
+import { Button, Space, Form, Stepper } from 'antd-mobile';
+import { AppConfigContext } from 'components/AppConfig';
 import { BLEServiceControlContext, ScooterDataModelContext } from 'components/App';
+import { SwitchWithState } from 'components/SwitchWithState';
 
 export interface SettingsProps {
     onClose: () => void;
@@ -13,13 +13,6 @@ const _Settings = ({ onClose }: SettingsProps) => {
     const bleServiceControl = React.useContext(BLEServiceControlContext);
     const scooterData = React.useContext(ScooterDataModelContext);
 
-    const [ cruiseControlEnabled, setCruiseControlEnabled ] = React.useState(!!scooterData['CRUISE_CONTROL']);
-    React.useEffect(() => setCruiseControlEnabled(!!scooterData['CRUISE_CONTROL']), [ !!scooterData['CRUISE_CONTROL'] ]);
-    const setCruiseControl = (isOn: boolean) => {
-        setCruiseControlEnabled(isOn);
-        void bleServiceControl?.setCruiseControl(isOn);
-    };
-
     return <Space>
         <Form
             layout='horizontal'
@@ -27,15 +20,15 @@ const _Settings = ({ onClose }: SettingsProps) => {
                 <Button block type='submit' color='primary' size='large'>Close</Button>
             }
             onFinish={onClose}
-            onChange={(data: Partial<AppConfig>) => setConfig(conf => ({ ...conf, ...data}))}
+            onValuesChange={changedValues => setConfig(conf => ({ ...conf, ...changedValues }))}
             initialValues={config}
         >
             <Form.Header>Settings</Form.Header>
-            <Form.Item name='distanceCorrectionMul' label='Distance correction multiplier' childElementPosition='right'>
+            <Form.Item name='distanceCorrectionMul' label='Distance correction multiplier' childElementPosition='normal'>
                 <Stepper digits={2} min={0.5} max={1.5} step={0.05} />
             </Form.Item>
-            <Form.Item name='cruiseControlEnabled' label='Cruise control' childElementPosition='left'>
-                <Switch disabled={!bleServiceControl?.connected} checked={cruiseControlEnabled} onChange={setCruiseControl} />
+            <Form.Item name='cruiseControlEnabled' label='Cruise control' childElementPosition='normal'>
+                <SwitchWithState disabled={!bleServiceControl?.connected} isOn={!!scooterData['CRUISE_CONTROL']} onChange={bleServiceControl?.setCruiseControl} />
             </Form.Item>
         </Form>
     </Space>;

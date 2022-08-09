@@ -1,5 +1,4 @@
-import { h, Fragment } from 'preact';
-import * as React from 'preact/compat';
+import * as React from 'react';
 import { HistoryContext, HistoryEntry } from './HistoryLogic';
 import { Space, Button, Divider } from 'antd-mobile';
 import { DeleteOutline, CloseOutline } from 'antd-mobile-icons';

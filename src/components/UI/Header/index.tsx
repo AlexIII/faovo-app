@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import * as React from 'react';
 import { Button, Space, Modal } from 'antd-mobile';
 import { SetOutline, HistogramOutline } from 'antd-mobile-icons';
 import { ConnectionButton } from './ConnectionButton';

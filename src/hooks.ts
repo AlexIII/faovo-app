@@ -1,9 +1,5 @@
-import * as React from 'preact/compat';
+import * as React from 'react';
 import * as U from 'Utils';
-
-declare module 'preact/compat' {
-    function useReducer<S>(reducer: (prev: S) => S, initialState: S): [S, () => void];
-}
 
 /* Hook that maintains live connection */
 export const useConnection = <Connection extends {}>(
@@ -24,18 +20,17 @@ export const useConnection = <Connection extends {}>(
     const [ state, setState ] = React.useState<{ connecting: boolean; autoReconnect: boolean; connection?: Connection; error?: Error; }>({ connecting: connectOnStartUp, autoReconnect: connectOnStartUp });
     const [ reconnectAttempts, setReconnectAttempts ] = React.useState(0);
     const componentDisposed = React.useRef(false);
-    React.useEffect(() => () => componentDisposed.current = true, []);
+    React.useEffect(() => () => { componentDisposed.current = true; }, []);
 
     // Start connection
     React.useEffect(() => {
-        console.log(`connecting = ${state.connecting}`);
         if(!state.connecting) return;
         const alive = { current: true };
         void createConnection(error => !componentDisposed.current && setState(prev => prev.connection? { error: error ?? new Error('Disconnected'), connecting: false, autoReconnect: true } : prev)).then(
             connection => alive.current? setState({ connection, connecting: false, autoReconnect: true }) : destroyConnection(connection),
             error => alive.current && setState({ error: error ?? new Error('Connection failed'), connecting: false, autoReconnect: true })
         );
-        return () => alive.current = false;
+        return () => { alive.current = false; };
     }, [ state.connecting ]);
 
     // Stable methods
@@ -76,7 +71,7 @@ export const useStableCallback = <F extends ((...args: any[]) => any)>(callback:
 };
 
 
-export const useThrottle = <S>(initialValue: S, update: (value: S) => void, delayMs: number): React.StateUpdater<S> => {
+export const useThrottle = <S>(initialValue: S, update: (value: S) => void, delayMs: number): React.Dispatch<React.SetStateAction<S>> => {
     const [ _, setDelayedValue ] = React.useState(initialValue);
     const valueUpdated = React.useRef(false);
     const firstMount = React.useRef(true);
@@ -103,11 +98,11 @@ export const LocalStoragePrefixContext = React.createContext('');
 export const LocalStoragePrefix = LocalStoragePrefixContext.Provider;
 
 /* Mimics React.useState, but restores last state value from localStorage after every component remount. */
-function useLocalStorage<S>(key: string, initialState: S | (() => S)): [ S, React.StateUpdater<S> ];
-function useLocalStorage<S = undefined>(key: string): [ S, React.StateUpdater<S | undefined> ];
+function useLocalStorage<S>(key: string, initialState: S | (() => S)): [S, React.Dispatch<React.SetStateAction<S>>];
+function useLocalStorage<S = undefined>(key: string): [S, React.Dispatch<React.SetStateAction<S | undefined>>];
 function useLocalStorage(key: string, initialState?: any) {
     const prefix = React.useContext(LocalStoragePrefixContext);
-    return React.useReducer<any, any, undefined>(
+    return React.useReducer<any, any>(
         (prvState: any, newState: any) => {
             const val = newState instanceof Function? newState(prvState) : newState;
             U.WEB.accessLocalStorage(LocalStorageHookGlobalKeyPrefix + prefix + key)[1](val);

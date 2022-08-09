@@ -1,5 +1,4 @@
-import { h } from 'preact';
-import * as React from 'preact/compat';
+import * as React from 'react';
 import { useLocalStorage } from 'hooks';
 import { ScooterDataModelContext } from 'components/App';
 import { AppConfigContext } from 'components/AppConfig';
@@ -19,7 +18,7 @@ interface HistoryContextType {
 
 export const HistoryContext = React.createContext<HistoryContextType>({ entries: [], clear: () => undefined });
 
-const _HistoryLogic: React.FC = ({ children }) => {
+const _HistoryLogic = ({ children }: React.PropsWithChildren<{}>) => {
     const [ history, setHistory ] = useLocalStorage<HistoryEntry[]>('tripHistory', []);
     const [ tripStarted, setTripStarted ] = React.useState(false);
     const [ config ] = React.useContext(AppConfigContext);
@@ -29,11 +28,11 @@ const _HistoryLogic: React.FC = ({ children }) => {
     const tripDistanceKm = (v => typeof v === 'number'? v * config.distanceCorrectionMul : v)(scooterData['RIDE_MILAGE']);
     const batteryLevel = scooterData['BATTERY_LEVEL'];
 
-    const updateLastEntry = (data: Partial<HistoryEntry>) => setHistory(([cur, ...hist]) => cur? [{ ...cur, ...data }, ...hist] : []);
+    const updateLastEntry = (data: Partial<HistoryEntry>) => setHistory(([ cur, ...hist ]) => cur? [{ ...cur, ...data }, ...hist] : []);
 
     React.useEffect(() => {
         const activeTrip =  typeof tripTimeMin === 'number' && typeof tripDistanceKm === 'number' && typeof batteryLevel === 'number';
-        console.log(`activeTrip: ${activeTrip}`);
+        // console.log(`activeTrip: ${activeTrip}`);
         if(!tripStarted) {
             // Start current trip tracking
             if(activeTrip) {
@@ -54,7 +53,7 @@ const _HistoryLogic: React.FC = ({ children }) => {
         } else if(activeTrip) {
             // Update current trip tracking
             updateLastEntry({ tripTimeMin, tripDistanceKm, tripEndBatteryLevel: batteryLevel });
-            console.log(`History: entry update`);
+            // console.log(`History: entry update`);
         } else {
             // Stop current trip tracking
             setTripStarted(false);

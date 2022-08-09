@@ -1,5 +1,4 @@
-import { h, Fragment } from 'preact';
-import * as React from 'preact/compat';
+import * as React from 'react';
 import * as U from 'Utils';
 import { Space, Grid } from 'antd-mobile';
 import { LeScooterDataModel, ScooterDataModelContext } from 'components/App';

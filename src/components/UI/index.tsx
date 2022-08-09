@@ -1,5 +1,4 @@
-import { h } from 'preact';
-import * as React from 'preact/compat';
+import * as React from 'react';
 import { Card, Divider } from 'antd-mobile';
 import { Header } from './Header';
 import { MainStats } from './MainStats';
@@ -37,14 +36,14 @@ const NoSupportScreen = ({ message }: NoSupportScreenProps) =>
     </MainContainer>
 ;
 
-const MainContainer: React.FunctionComponent = ({ children }) =>
-    <div className='main-container'>
-        <Card>
+const MainContainer = ({ children }: React.PropsWithChildren<{}>) =>
+    <>
+        <Card bodyStyle={{ minWidth: '80vw' }}>
             { children }
         </Card>
         <p className='text-footer'>{ `${Package.description}` }</p>
         <a href={Package.homepage} className='text-footer'>© { Package.author.name }</a>
-    </div>
+    </>
 ;
 
 export { NoSupportScreen };

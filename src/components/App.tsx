@@ -1,5 +1,4 @@
-import { h } from 'preact';
-import * as React from 'preact/compat';
+import * as React from 'react';
 import { UI, NoSupportScreen } from './UI';
 import { BLEService, BLEServiceControl, LeScooterBLEData } from './BLEService';
 import * as Package from 'package.json';
@@ -16,7 +15,8 @@ const _PRERENDER = typeof window === "undefined";
 const bluetoothSupported = typeof window !== "undefined" && 'bluetooth' in navigator;
 
 const App = ({}) => {
-    const [ scooterDataModel, setScooterBLEData ] = React.useReducer<LeScooterDataModel, LeScooterBLEData>(computeModel, {} as LeScooterDataModel);
+    const [ scooterDataModel, setScooterBLEData ] = 
+        React.useReducer<(prev: LeScooterDataModel, newData: LeScooterBLEData) => LeScooterDataModel>(computeModel, {} as LeScooterDataModel);
     const [ bleServiceControl, setBleServiceControl ] = React.useState<BLEServiceControl | undefined>(undefined);
 
     if(!_PRERENDER && !bluetoothSupported) {

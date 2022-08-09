@@ -1,4 +1,4 @@
-import * as React from 'preact/compat';
+import * as React from 'react';
 import { useConnection, useThrottle } from 'hooks';
 import { LeScooterBLE } from './LeScooterBLE';
 import { LeMessageArg, LeMessageTag } from 'LeProtocol';
