@@ -26,12 +26,15 @@ If you have a feature suggestion, or have found a bug, feel free to create an is
   - Cruise control On / Off
 - Misc
   - User defined correction multiplier for the measured distance
+  - Trip history
 
 
 ## Limitations
 
 The biggest limitation right now is to find functional Bluetooth API support in a browser.
 [Web Bluetooth](https://webbluetoothcg.github.io/web-bluetooth/) has been in the works like 5 years and it's still considered "experimental". *sigh* 
+
+No support for imperial units until the feature is heavily requested.
 
 ## Compatible browsers
 
@@ -42,11 +45,11 @@ The biggest limitation right now is to find functional Bluetooth API support in 
 
 #### Android
 
-- ✔️✖ Chrome
-  - You will need to activate experimental features, for this navigate to `chrome://flags/#enable-experimental-web-platform-features`.
-  The Bluetooth may not connect on the first try (or second, third, etc).
+- ✔️ Brave
+- ✔️ Samsung Internet
+- ✔️ Chrome
+  - You may need to activate experimental features, for this navigate to `chrome://flags/#enable-experimental-web-platform-features`.
 - ✖ Opera - theoretically supported, but failed to access Bluetooth capabilities
-- ✖ Samsung Internet - theoretically supported, but failed to establish Bluetooth connection
 
 #### iOS
 
@@ -58,6 +61,7 @@ You can try alternatives, like [WebBLE](https://github.com/daphtdazz/WebBLE) or 
 LENZOD is a horrible app (on the inside too!). Here's some of the problems I couldn't simply live with.
 
 - Every time it connects to the scooter it deletes **ALL** paired Bluetooth devices from the system. Your headphones, other accessories, gone.
+- Problems with establishing initial connection to the scooter.
 - Obsessively wants you to register online for no good reason.
 - Half of the controls simply do not work.
 - Bizarre interface solutions, like displaying trip time as a number with one decimal (like 0.8 hours - wtf it that?).

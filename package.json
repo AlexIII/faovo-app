@@ -1,9 +1,10 @@
 {
   "private": true,
   "name": "faovo-app",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "license": "MIT",
   "description": "An alternative app for the Fake AOVO Pro M1 Scooter",
+  "homepage": "https://github.com/AlexIII/faovo-app",
   "author": {
     "name": "AlexIII",
     "url": "https://github.com/AlexIII"

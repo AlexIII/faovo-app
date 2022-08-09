@@ -25,6 +25,7 @@ const _HistoryLogic: React.FC = ({ children }) => {
     const [ config ] = React.useContext(AppConfigContext);
     const scooterData = React.useContext(ScooterDataModelContext);
     const tripTimeMin = scooterData['RIDE_TIME'];
+    const tripStartTs = scooterData['RIDE_START_TS'];
     const tripDistanceKm = (v => typeof v === 'number'? v * config.distanceCorrectionMul : v)(scooterData['RIDE_MILAGE']);
     const batteryLevel = scooterData['BATTERY_LEVEL'];
 
@@ -36,7 +37,6 @@ const _HistoryLogic: React.FC = ({ children }) => {
         if(!tripStarted) {
             // Start current trip tracking
             if(activeTrip) {
-                const tripStartTs = Date.now() - tripTimeMin * 60 * 1000;
                 setHistory(hist => {
                     // Determine if continuing the previous trip
                     const lastTrip = hist[0];
@@ -62,7 +62,7 @@ const _HistoryLogic: React.FC = ({ children }) => {
             // Remove short previous trips
             setHistory(hist => hist.filter((entry, idx) => idx === 0 || (entry.tripTimeMin > 3 && entry.tripDistanceKm > 0.5) ));
         }
-    }, [ tripTimeMin, tripDistanceKm, batteryLevel ]);
+    }, [ tripTimeMin, tripStartTs, tripDistanceKm, batteryLevel ]);
 
     return <HistoryContext.Provider value={{ entries: history, clear: () => (setHistory([]), setTripStarted(false)) }}>
         { children }

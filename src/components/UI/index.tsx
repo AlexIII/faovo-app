@@ -43,7 +43,7 @@ const MainContainer: React.FunctionComponent = ({ children }) =>
             { children }
         </Card>
         <p className='text-footer'>{ `${Package.description}` }</p>
-        <a href={Package.author.url} className='text-footer'>© { Package.author.name }</a>
+        <a href={Package.homepage} className='text-footer'>© { Package.author.name }</a>
     </div>
 ;
 

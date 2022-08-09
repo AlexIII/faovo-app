@@ -16,7 +16,7 @@ export enum LeMessageTag {
     WHEEL_DIAMETER_MODE = 0x1C,
     CRUISE_CONTROL = 0x1D,
     GEAR_MODE = 0x1F,
-    RIDE_TIME = 0x22,           // ??
+    RIDE_TIME = 0x22,
 }
 
 export enum LeMessageArg {

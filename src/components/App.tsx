@@ -1,16 +1,12 @@
 import { h } from 'preact';
 import * as React from 'preact/compat';
-import { LeMessageTag } from 'LeProtocol';
 import { UI, NoSupportScreen } from './UI';
-import { BLEService, BLEServiceControl } from './BLEService';
+import { BLEService, BLEServiceControl, LeScooterBLEData } from './BLEService';
 import * as Package from 'package.json';
 import { AppConfigProvider } from './AppConfig';
 import { HistoryLogic } from './History';
 
-const INVALIDATE_MODEL_DELAY_MS = 5000;
-
 type LeScooterComputedData = { AVG_SPEED: number | undefined; };
-export type LeScooterBLEData = Record<keyof typeof LeMessageTag, number | string | undefined> | null;
 export type LeScooterDataModel = LeScooterBLEData & LeScooterComputedData;
 export const ScooterDataModelContext = React.createContext({} as LeScooterDataModel);
 
@@ -22,12 +18,6 @@ const bluetoothSupported = typeof window !== "undefined" && 'bluetooth' in navig
 const App = ({}) => {
     const [ scooterDataModel, setScooterBLEData ] = React.useReducer<LeScooterDataModel, LeScooterBLEData>(computeModel, {} as LeScooterDataModel);
     const [ bleServiceControl, setBleServiceControl ] = React.useState<BLEServiceControl | undefined>(undefined);
-
-    // Invalidate data model on timeout
-    React.useEffect(() => {
-        const handle = setTimeout(() => setScooterBLEData(null), INVALIDATE_MODEL_DELAY_MS);
-        return () => clearTimeout(handle);
-    } , [ scooterDataModel ]);
 
     if(!_PRERENDER && !bluetoothSupported) {
         const message = 'Your browser does not support Bluetooth. \nTry latest Google Chrome.';

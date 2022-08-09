@@ -1,5 +1,4 @@
 import * as React from 'preact/compat';
-import { LeScooterBLEData } from 'components/App';
 import { useConnection, useThrottle } from 'hooks';
 import { LeScooterBLE } from './LeScooterBLE';
 import { LeMessageArg, LeMessageTag } from 'LeProtocol';
@@ -9,6 +8,8 @@ const AUTO_RECONNECT_DELAY_MS = 2000;
 const AUTO_RECONNECT_ATTEMPTS = 3;
 const DATA_THROTTLE_DELAY_MS = 250;
 const DATA_REQUEST_PERIOD_MS = 2000;
+
+export type LeScooterBLEData = Record<keyof typeof LeMessageTag, number | string | undefined> & { RIDE_START_TS: number; } | null;
 
 export interface BLEServiceControl extends Omit<ReturnType<typeof useConnection>, 'connection'> {
     setLock(isOn: boolean): Promise<void>;
@@ -44,7 +45,11 @@ const _BLEService = ({ setScooterBLEData, setBleServiceControl }: BLEServiceProp
     // Subscribe to connection received data
     React.useEffect(() => {
         if(!connection) return;
-        connection.setOnReceive((tag, value) => setNewData(prev => ({ ...(prev ?? {}), [tag]: value } as LeScooterBLEData)));
+        connection.setOnReceive((tag, value) => setNewData(prev => {
+            const res = { ...prev, ...{ [tag]: value } };
+            if(tag === LeMessageTag[LeMessageTag.RIDE_TIME] && typeof value === 'number') res.RIDE_START_TS = Date.now() - value * 60 * 1000;
+            return res as LeScooterBLEData;
+        }));
         return () => {
             connection.setOnReceive(undefined);
             setNewData(null);

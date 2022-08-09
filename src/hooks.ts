@@ -67,10 +67,20 @@ export const useConnection = <Connection extends {}>(
     };
 };
 
+// Always stable useCallback alternative. Requires no dependency list.
+// Also see https://blog.thoughtspile.tech/2021/04/07/better-usecallback/
+export const useStableCallback = <F extends ((...args: any[]) => any)>(callback: F, _?: any[]) => {
+    const ref = React.useRef(callback);
+    ref.current = callback;
+    return React.useMemo(() => (...args: any[]) => ref.current.apply(null, args as any), []) as F;
+};
+
+
 export const useThrottle = <S>(initialValue: S, update: (value: S) => void, delayMs: number): React.StateUpdater<S> => {
     const [ _, setDelayedValue ] = React.useState(initialValue);
     const valueUpdated = React.useRef(false);
     const firstMount = React.useRef(true);
+    const update_s = useStableCallback(update);
 
     React.useEffect(() => {
         if(firstMount.current) {
@@ -79,7 +89,7 @@ export const useThrottle = <S>(initialValue: S, update: (value: S) => void, dela
             return;
         }
         const handler = setTimeout(() => {
-            setDelayedValue(cur => (update(cur), cur));
+            setDelayedValue(cur => (update_s(cur), cur));
             valueUpdated.current = !valueUpdated.current;
         }, delayMs);
         return () => clearTimeout(handler);
