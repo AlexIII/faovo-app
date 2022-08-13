@@ -1,4 +1,4 @@
-<img align="right" width="350" src="./img/screenshot-1.jpg" />
+<img align="right" width="350" src="./img/screen-1.jpg" />
 
 # Faovo - an alternative web app for the Fake AOVO Pro M1 Scooter
 
@@ -28,6 +28,7 @@ If you have a feature suggestion, or have found a bug, feel free to create an is
   - User defined correction multiplier for the measured distance
   - Trip history
 
+<img align="right" width="350" src="./img/screen-2.jpg" />
 
 ## Limitations
 
@@ -67,6 +68,8 @@ LENZOD is a horrible app (on the inside too!). Here's some of the problems I cou
 - Bizarre interface solutions, like displaying trip time as a number with one decimal (like 0.8 hours - wtf it that?).
 - The interface is very noisy overall. It tries too hard to look like "cool sport car dashboard" it's ridiculous.
 - I also needed additional functions, like the ability to correct imprecise distance measurements.
+
+<img align="right" width="350" src="./img/screen-3.jpg" />
 
 ## How to determine if your AOVO Pro M1 is a fake one
 
