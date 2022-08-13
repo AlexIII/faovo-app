@@ -4,7 +4,7 @@
 
 This is a web app for the clones of AOVO Pro M1 Scooter. It works entirely from browser and requires no install.
 
-The app can also be used offline and can be installed on the main screen (PWA is not working from the github pages just yet, working on it).
+The app can also be used offline and can be installed on the main screen.
 
 This implementation is based on reverse-engineering of the BLE protocol via decompilation of the original 'LENZOD' Android app.
 
@@ -15,6 +15,8 @@ If you have a feature suggestion, or have found a bug, feel free to create an is
 [And do try the app here!](https://alexiii.github.io/faovo-app/)
 
 ## What it can do
+
+<img align="right" width="350" src="./img/screen-2.jpg" />
 
 - Displays telemetry
   - Trip time
@@ -28,8 +30,6 @@ If you have a feature suggestion, or have found a bug, feel free to create an is
   - User defined correction multiplier for the measured distance
   - Trip history
 
-<img align="right" width="350" src="./img/screen-2.jpg" />
-
 ## Limitations
 
 The biggest limitation right now is to find functional Bluetooth API support in a browser.
@@ -38,6 +38,9 @@ The biggest limitation right now is to find functional Bluetooth API support in 
 No support for imperial units until the feature is heavily requested.
 
 ## Compatible browsers
+
+<img align="right" width="350" src="./img/screen-3.jpg" />
+
 
 #### Windows
 
@@ -68,8 +71,6 @@ LENZOD is a horrible app (on the inside too!). Here's some of the problems I cou
 - Bizarre interface solutions, like displaying trip time as a number with one decimal (like 0.8 hours - wtf it that?).
 - The interface is very noisy overall. It tries too hard to look like "cool sport car dashboard" it's ridiculous.
 - I also needed additional functions, like the ability to correct imprecise distance measurements.
-
-<img align="right" width="350" src="./img/screen-3.jpg" />
 
 ## How to determine if your AOVO Pro M1 is a fake one
 
